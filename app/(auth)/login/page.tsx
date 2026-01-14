@@ -1,4 +1,5 @@
 import { LoginForm } from '@/src/features/auth'
+import { ProtectedRoute } from '@/src/components/auth/ProtectedRoute'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -8,8 +9,10 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <LoginForm />
-    </div>
+    <ProtectedRoute mode="auth">
+      <div className="flex min-h-screen items-center justify-center p-4">
+        <LoginForm />
+      </div>
+    </ProtectedRoute>
   )
 }

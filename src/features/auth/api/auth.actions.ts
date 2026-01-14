@@ -69,7 +69,9 @@ export async function registerAction(
     email,
     password,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/callback`,
+      emailRedirectTo: `${
+        process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+      }/auth/callback`,
     },
   })
 
@@ -79,7 +81,7 @@ export async function registerAction(
 
   return {
     success: true,
-    message: 'Registration successful! Please check your email to verify your account.',
+    message: 'If an account with this email exists, a verification email has been sent.',
   }
 }
 
