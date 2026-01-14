@@ -2,7 +2,7 @@
 
 Complete authentication system for the blog application with Supabase integration, TanStack Query, and React Hook Form.
 
-## 📁 Structure
+## Structure
 
 ```
 src/features/auth/
@@ -24,7 +24,7 @@ src/features/auth/
 └── index.ts               # Barrel export
 ```
 
-## 🚀 Usage
+## Usage
 
 ### Using Auth Hooks
 
@@ -128,7 +128,7 @@ function LoginFormWithAction() {
 }
 ```
 
-## 🔐 API Reference
+## API Reference
 
 ### Server Functions
 
@@ -248,7 +248,7 @@ const logout = useLogout()
 logout.mutate()
 ```
 
-## 🎨 Components
+## Components
 
 ### LoginForm
 Full-featured login form with validation.
@@ -276,7 +276,7 @@ Customizable logout button.
 />
 ```
 
-## ✅ Validation Schemas
+## Validation Schemas
 
 All forms use Zod for validation:
 
@@ -285,7 +285,7 @@ All forms use Zod for validation:
 - **Forgot Password**: Email
 - **Reset Password**: Password (with requirements) + confirm password
 
-## 🔄 Features
+## Features
 
 - ✅ Email/password authentication
 - ✅ OAuth support (Google, GitHub) ready
@@ -300,7 +300,7 @@ All forms use Zod for validation:
 - ✅ Success messages
 - ✅ Responsive UI components
 
-## 📝 Notes
+## Notes
 
 - Auth state is managed automatically via Supabase auth state listener
 - Session refresh is handled by middleware
