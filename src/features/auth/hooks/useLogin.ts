@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { login, type LoginCredentials } from '../api/auth.client'
 import { useRouter } from 'next/navigation'
 import { routes } from '@/src/config/routes'
+import { toast } from 'sonner'
 
 /**
  * Hook for login mutation with TanStack Query
@@ -24,7 +25,7 @@ export function useLogin() {
       router.refresh()
     },
     onError: (error: Error) => {
-      console.error('Login error:', error)
+      toast.error(`Login error: ${error.message}`)
     },
   })
 }
