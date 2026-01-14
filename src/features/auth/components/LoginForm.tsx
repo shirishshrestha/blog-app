@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLogin } from '../hooks/useLogin'
@@ -20,7 +19,6 @@ import Link from 'next/link'
 import { routes } from '@/src/config/routes'
 
 export function LoginForm() {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const loginMutation = useLogin()
 
   const form = useForm<LoginFormData>({
@@ -32,13 +30,8 @@ export function LoginForm() {
     },
   })
 
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-      setErrorMessage(null)
+  const onSubmit = async (data: LoginFormData) => {     
       await loginMutation.mutateAsync(data)
-    } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Login failed')
-    }
   }
 
   return (
@@ -52,11 +45,7 @@ export function LoginForm() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {errorMessage && (
-            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-              {errorMessage}
-            </div>
-          )}
+        
 
           <FormField
             control={form.control}

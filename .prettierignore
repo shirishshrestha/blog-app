@@ -38,9 +38,11 @@ Thumbs.db
 .vscode
 .idea
 
-# Generated UI / vendor code
-public
-supabase
+# Ensure source folders are explicitly allowed for formatting
+!src
+!src/**
+!app
+!app/**
 
 # Markdown / Docs (optional)
 CHANGELOG.md
