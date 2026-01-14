@@ -22,31 +22,26 @@ export function LoginForm() {
   const loginMutation = useLogin()
 
   const form = useForm<LoginFormData>({
-    // @ts-expect-error - Zod v3 types are cached, resolver works correctly at runtime
-    resolver: zodResolver(loginSchema) as Resolver<LoginFormData>,
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   })
 
-  const onSubmit = async (data: LoginFormData) => {     
-      await loginMutation.mutateAsync(data)
+  const onSubmit = async (data: LoginFormData) => {
+    await loginMutation.mutateAsync(data)
   }
 
   return (
     <Card className="w-full max-w-md p-8">
       <div className="mb-6 text-center">
         <h2 className="text-2xl font-bold">Welcome Back</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Sign in to your account to continue
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground">Sign in to your account to continue</p>
       </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        
-
           <FormField
             control={form.control}
             name="email"
@@ -54,11 +49,7 @@ export function LoginForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="your@email.com"
-                    {...field}
-                  />
+                  <Input type="email" placeholder="your@email.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -80,11 +71,7 @@ export function LoginForm() {
                   </Link>
                 </div>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="••••••••"
-                    {...field}
-                  />
+                  <Input type="password" placeholder="••••••••" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -96,17 +83,12 @@ export function LoginForm() {
             className="w-full"
             disabled={form.formState.isSubmitting || loginMutation.isPending}
           >
-            {form.formState.isSubmitting || loginMutation.isPending
-              ? 'Signing in...'
-              : 'Sign In'}
+            {form.formState.isSubmitting || loginMutation.isPending ? 'Signing in...' : 'Sign In'}
           </Button>
 
           <div className="text-center text-sm">
             Don&apos;t have an account?{' '}
-            <Link
-              href={routes.auth.signup}
-              className="font-medium text-primary hover:underline"
-            >
+            <Link href={routes.auth.signup} className="font-medium text-primary hover:underline">
               Sign up
             </Link>
           </div>
