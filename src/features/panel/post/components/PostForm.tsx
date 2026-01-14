@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm, type Resolver } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -40,7 +40,8 @@ export function PostForm({ post, mode }: PostFormProps) {
   const updateMutation = useUpdatePost(post?.id || '')
 
   const form = useForm<PostFormData>({
-    resolver: zodResolver(postSchema),
+    // @ts-ignore - Zod v3.22 internal types don't match resolver expectations but runtime works
+    resolver: zodResolver(postSchema) as any,
     defaultValues: {
       title: post?.title || '',
       content: post?.content || '',

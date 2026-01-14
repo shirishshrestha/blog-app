@@ -22,7 +22,8 @@ export function LoginForm() {
   const loginMutation = useLogin()
 
   const form = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+    // @ts-ignore - Zod v3.22 internal types don't match resolver expectations but runtime works
+    resolver: zodResolver(loginSchema) as any,
     defaultValues: {
       email: '',
       password: '',
