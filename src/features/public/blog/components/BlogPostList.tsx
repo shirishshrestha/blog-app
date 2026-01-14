@@ -1,5 +1,4 @@
 import { BlogPostCard } from './BlogPostCard'
-import { FileText } from 'lucide-react'
 import type { Post } from '@/src/features/panel/post/types/post.types'
 import { EmptyState } from '@/src/components/ui/empty-state'
 

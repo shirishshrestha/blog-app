@@ -1,9 +1,8 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Calendar, Eye, ArrowLeft } from 'lucide-react'
+import { Calendar, Eye, ArrowLeft, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { routes } from '@/src/config/routes'
 import { getPostBySlug, incrementPostViewCount } from '@/src/features/panel/post/api/post.server'
@@ -28,11 +27,15 @@ export default async function PostPage({ params }: PostPageProps) {
   // Increment view count (non-blocking)
   incrementPostViewCount(post.id).catch(console.error)
 
+  // Calculate reading time (rough estimate: 200 words per minute)
+  const wordCount = post.content.split(/\s+/).length
+  const readingTime = Math.ceil(wordCount / 200)
+
   return (
     <article className="min-h-screen py-12">
       <div className="wrapper max-w-4xl">
         {/* Back Button */}
-        <Button variant="ghost" size="sm" className="mb-8" asChild>
+        <Button variant="ghost" size="sm" className="mb-8 hover:bg-muted" asChild>
           <Link href={routes.blog}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
@@ -40,35 +43,44 @@ export default async function PostPage({ params }: PostPageProps) {
         </Button>
 
         {/* Post Header */}
-        <header className="mb-8">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <Calendar className="h-4 w-4" />
-            <time dateTime={post.published_at || post.created_at}>
-              {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
+        <header className="mb-12 space-y-6">
+          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              <time dateTime={post.published_at || post.created_at}>
+                {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </time>
+            </div>
+            <span>•</span>
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              <span>{readingTime} min read</span>
+            </div>
             {post.view_count > 0 && (
               <>
                 <span>•</span>
-                <Eye className="h-4 w-4" />
-                <span>{post.view_count} views</span>
+                <div className="flex items-center gap-2">
+                  <Eye className="h-4 w-4" />
+                  <span>{post.view_count} views</span>
+                </div>
               </>
             )}
-            <span>•</span>
-            <Badge variant="secondary">{post.status}</Badge>
           </div>
 
-          <h1 className="text-4xl font-bold tracking-tight mb-4">{post.title}</h1>
+          <h1 className="text-5xl font-bold tracking-tight leading-tight">{post.title}</h1>
 
-          {post.excerpt && <p className="text-xl text-muted-foreground">{post.excerpt}</p>}
+          {post.excerpt && (
+            <p className="text-xl text-muted-foreground leading-relaxed">{post.excerpt}</p>
+          )}
         </header>
 
         {/* Featured Image */}
         {post.featured_image && (
-          <div className="relative w-full h-[400px] mb-8 rounded-lg overflow-hidden">
+          <div className="relative w-full h-[500px] mb-12 rounded-xl overflow-hidden border shadow-lg">
             <Image
               src={post.featured_image}
               alt={post.title}
@@ -80,27 +92,30 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
         )}
 
-        <Separator className="my-8" />
-
         {/* Post Content */}
-        <div className="prose prose-gray dark:prose-invert max-w-none">
-          <div className="whitespace-pre-wrap">{post.content}</div>
+        <div className="prose prose-lg prose-gray dark:prose-invert max-w-none">
+          <div className="whitespace-pre-wrap leading-relaxed">{post.content}</div>
         </div>
 
-        <Separator className="my-8" />
+        <Separator className="my-12" />
 
         {/* Post Footer */}
-        <footer className="mt-12">
-          <div className="flex items-center justify-between">
-            <Button variant="outline" asChild>
+        <footer className="mt-12 space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <Button variant="outline" size="lg" className="hover:bg-muted" asChild>
               <Link href={routes.blog}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                More Posts
+                More Articles
               </Link>
             </Button>
 
             <div className="text-sm text-muted-foreground">
-              Last updated: {new Date(post.updated_at).toLocaleDateString()}
+              Last updated:{' '}
+              {new Date(post.updated_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
             </div>
           </div>
         </footer>
