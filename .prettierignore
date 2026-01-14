@@ -1,0 +1,50 @@
+# Dependencies
+node_modules
+.pnpm-store
+.yarn
+.yarn-cache
+.npm
+bower_components
+
+# Build outputs
+.next
+out
+dist
+build
+coverage
+
+# Static exports / generated files
+.vercel
+.netlify
+.cache
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Lock files (optional – uncomment if you don't want Prettier touching them)
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Logs
+*.log
+logs
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Generated UI / vendor code
+public
+supabase
+
+# Markdown / Docs (optional)
+CHANGELOG.md
+
+# Config files you usually don't want formatted
+*.min.js
+*.min.css
