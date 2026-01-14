@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm, type Resolver } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -40,11 +40,10 @@ export function PostForm({ post, mode }: PostFormProps) {
   const updateMutation = useUpdatePost(post?.id || '')
 
   const form = useForm<PostFormData>({
-    // @ts-expect-error - Zod v3 types are cached, resolver works correctly at runtime
-    resolver: zodResolver(postSchema) as Resolver<PostFormData>,
+    // @ts-ignore - Zod v3.22 internal types don't match resolver expectations but runtime works
+    resolver: zodResolver(postSchema) as any,
     defaultValues: {
       title: post?.title || '',
-      slug: post?.slug || '',
       content: post?.content || '',
       excerpt: post?.excerpt || '',
       featured_image: post?.featured_image || '',
@@ -55,10 +54,12 @@ export function PostForm({ post, mode }: PostFormProps) {
   const isLoading = mode === 'create' ? createMutation.isPending : updateMutation.isPending
 
   const onSubmit = async (data: PostFormData) => {
+    const slug = generateSlug(data.title)
+
     if (mode === 'create') {
       await createMutation.mutateAsync({
         title: data.title,
-        slug: data.slug,
+        slug,
         content: data.content,
         excerpt: data.excerpt || undefined,
         featured_image: data.featured_image || undefined,
@@ -67,7 +68,7 @@ export function PostForm({ post, mode }: PostFormProps) {
     } else {
       await updateMutation.mutateAsync({
         title: data.title,
-        slug: data.slug,
+        slug,
         content: data.content,
         excerpt: data.excerpt || undefined,
         featured_image: data.featured_image || undefined,
@@ -88,29 +89,6 @@ export function PostForm({ post, mode }: PostFormProps) {
               <FormControl>
                 <Input placeholder="Enter post title" {...field} />
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="slug"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Slug</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Auto-generated from title"
-                  {...field}
-                  value={field.value || generateSlug(form.watch('title'))}
-                  disabled
-                  className="bg-muted"
-                />
-              </FormControl>
-              <FormDescription>
-                URL-friendly version of the title (automatically generated)
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

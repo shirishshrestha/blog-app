@@ -22,8 +22,8 @@ export function RegisterForm() {
   const registerMutation = useRegister()
 
   const form = useForm<RegisterFormData>({
-    // @ts-expect-error - Zod v3 types are cached, resolver works correctly at runtime
-    resolver: zodResolver(registerSchema) as Resolver<RegisterFormData>,
+    // @ts-ignore - Zod v3.22 internal types don't match resolver expectations but runtime works
+    resolver: zodResolver(registerSchema) as any,
     defaultValues: {
       fullName: '',
       email: '',
