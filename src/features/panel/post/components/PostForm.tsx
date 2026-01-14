@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
-import { useForm, useWatch, type Resolver } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -55,18 +54,6 @@ export function PostForm({ post, mode }: PostFormProps) {
 
   const isLoading = mode === 'create' ? createMutation.isPending : updateMutation.isPending
 
-  // Auto-generate slug from title using useWatch
-  const watchTitle = useWatch({
-    control: form.control,
-    name: 'title',
-  })
-
-  useEffect(() => {
-    if (mode === 'create' && watchTitle && !form.getValues('slug')) {
-      form.setValue('slug', generateSlug(watchTitle), { shouldValidate: false })
-    }
-  }, [watchTitle, mode, form])
-
   const onSubmit = async (data: PostFormData) => {
     if (mode === 'create') {
       await createMutation.mutateAsync({
@@ -113,9 +100,17 @@ export function PostForm({ post, mode }: PostFormProps) {
             <FormItem>
               <FormLabel>Slug</FormLabel>
               <FormControl>
-                <Input placeholder="post-url-slug" {...field} />
+                <Input
+                  placeholder="Auto-generated from title"
+                  {...field}
+                  value={field.value || generateSlug(form.watch('title'))}
+                  disabled
+                  className="bg-muted"
+                />
               </FormControl>
-              <FormDescription>URL-friendly version of the title (auto-generated)</FormDescription>
+              <FormDescription>
+                URL-friendly version of the title (automatically generated)
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

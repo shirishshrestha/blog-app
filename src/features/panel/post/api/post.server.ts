@@ -10,7 +10,19 @@ export const getPosts = cache(async (filters?: PostFilters) => {
   try {
     const supabase = await createClient()
 
-    let query = supabase.from('posts').select('*').order('created_at', { ascending: false })
+    let query = supabase
+      .from('posts')
+      .select(
+        `
+        *,
+        profiles (
+          id,
+          full_name,
+          avatar_url
+        )
+      `
+      )
+      .order('created_at', { ascending: false })
 
     // Apply filters
     if (filters?.status) {
@@ -55,7 +67,20 @@ export const getPostById = cache(async (id: string) => {
   try {
     const supabase = await createClient()
 
-    const { data, error } = await supabase.from('posts').select('*').eq('id', id).single()
+    const { data, error } = await supabase
+      .from('posts')
+      .select(
+        `
+        *,
+        profiles (
+          id,
+          full_name,
+          avatar_url
+        )
+      `
+      )
+      .eq('id', id)
+      .single()
 
     if (error) {
       console.error('Error fetching post:', error)
@@ -77,7 +102,20 @@ export const getPostBySlug = cache(async (slug: string) => {
   try {
     const supabase = await createClient()
 
-    const { data, error } = await supabase.from('posts').select('*').eq('slug', slug).single()
+    const { data, error } = await supabase
+      .from('posts')
+      .select(
+        `
+        *,
+        profiles (
+          id,
+          full_name,
+          avatar_url
+        )
+      `
+      )
+      .eq('slug', slug)
+      .single()
 
     if (error) {
       console.error('Error fetching post:', error)

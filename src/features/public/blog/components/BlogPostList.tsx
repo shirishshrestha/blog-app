@@ -1,6 +1,6 @@
 import { BlogPostCard } from './BlogPostCard'
 import type { Post } from '@/src/features/panel/post/types/post.types'
-import { EmptyState } from '@/src/components/ui/empty-state'
+import { EmptyState } from '@/src/features/shared/components/ui/empty-state'
 
 interface BlogPostListProps {
   posts: Post[]
@@ -16,19 +16,13 @@ export function BlogPostList({ posts, featured = false }: BlogPostListProps) {
   }
 
   if (featured && posts.length > 0) {
-    const [featuredPost, ...restPosts] = posts
-
     return (
       <div className="space-y-8">
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Featured Post</h2>
-          <BlogPostCard post={featuredPost} variant="featured" />
-        </div>
-        {restPosts.length > 0 && (
+        {posts.length > 0 && (
           <div>
             <h2 className="text-2xl font-bold mb-4">Recent Posts</h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {restPosts.map((post) => (
+              {posts.map((post) => (
                 <BlogPostCard key={post.id} post={post} />
               ))}
             </div>

@@ -8,7 +8,15 @@ export function PublicFooter() {
   return (
     <footer className="border-t bg-muted/40">
       <div className="wrapper py-8">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 xl:grid-cols-5">
+          <div>
+            <h3 className="font-bold text-2xl mb-3">Blog App</h3>
+            <p className="text-sm text-muted-foreground">
+              Your go-to platform for insightful articles, tutorials, and stories from a vibrant
+              community of writers.
+            </p>
+          </div>
+
           <div>
             <h3 className="font-semibold mb-3">Product</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">

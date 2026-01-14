@@ -128,7 +128,7 @@ export default function DataTable<T = Record<string, unknown>>({
    * Get dynamic row className
    */
   const getRowClass = (row: T, index: number) => {
-    const baseClass = 'border-b border-border'
+    const baseClass = 'border-b border-border '
     const hoverClass = hoverable ? 'hover:bg-muted/50' : ''
     const stripedClass = striped && index % 2 === 1 ? 'bg-muted/20' : ''
     const clickableClass = onRowClick ? 'cursor-pointer' : ''

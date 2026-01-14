@@ -60,8 +60,8 @@ export function UnifiedSidebar({ menuItems }: UnifiedSidebarProps) {
     <Sidebar className="border-r bg-background">
       <SidebarContent className="bg-background">
         {/* Logo Section */}
-        <div className="flex justify-center items-center px-6 py-6">
-          <Link href="/" className="flex items-center space-x-2">
+        <div className="flex  items-center pt-4 px-4">
+          <Link href="/" className="flex  space-x-2">
             <span className="text-2xl font-bold">Blog App</span>
           </Link>
         </div>
@@ -95,12 +95,10 @@ export function UnifiedSidebar({ menuItems }: UnifiedSidebarProps) {
                         <SidebarMenuSub className="mx-0">
                           {item.children.map((child) => {
                             const ChildIcon = getIcon(child.icon)
-                            const isChildActive =
-                              pathname === child.path || pathname.startsWith(child.path + '/')
 
                             return (
                               <SidebarMenuSubItem key={child.path}>
-                                <SidebarMenuSubButton asChild isActive={isChildActive}>
+                                <SidebarMenuSubButton asChild>
                                   <Link href={child.path}>
                                     <ChildIcon className="h-4 w-4" />
                                     <span>{child.name}</span>

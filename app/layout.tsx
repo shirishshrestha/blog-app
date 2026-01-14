@@ -1,20 +1,10 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono, Noto_Sans } from 'next/font/google'
+import { Manrope } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/src/providers'
 import { Toaster } from 'sonner'
 
-const notoSans = Noto_Sans({ variable: '--font-sans' })
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
+const notoSans = Manrope({ variable: '--font-sans' })
 
 export const metadata: Metadata = {
   title: 'Blog App',
@@ -28,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={notoSans.variable} suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${notoSans.variable} font-sans antialiased`}>
         <Providers>{children}</Providers>
         <Toaster richColors position="bottom-right" />
       </body>

@@ -53,12 +53,12 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
   }
 
   return (
-    <div className="space-y-6 wrapper">
+    <div className="space-y-6 ">
       {/* Page Header */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" asChild>
-            <Link href={routes.dashboard.home}>
+            <Link href={routes.posts.list}>
               <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>

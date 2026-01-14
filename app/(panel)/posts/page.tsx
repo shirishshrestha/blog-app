@@ -1,9 +1,8 @@
 import { getCurrentUser } from '@/src/features/auth'
-import { getUserPosts } from '@/src/features/panel/post/api/post.server'
+import { getPosts } from '@/src/features/panel/post/api/post.server'
 import { CreatePostButton } from '@/src/features/panel/post/components/CreatePostButton'
-import { ErrorState } from '@/src/components/ui/error-state'
+import { ErrorState } from '@/src/features/shared/components/ui/error-state'
 import { Separator } from '@/components/ui/separator'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import DataTable from '@/src/features/shared/components/DataTable'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -12,24 +11,33 @@ import Link from 'next/link'
 import { routes } from '@/src/config/routes'
 import { DeletePostButton } from '@/src/features/panel/post/components/DeletePostButton'
 import type { Post } from '@/src/features/panel/post/types/post.types'
+import { PostsFilterToolbar } from '@/src/features/panel/post/components/PostsFilterToolbar'
+import EllipsisTooltip from '@/src/features/shared/components/EllipsisTooltip'
+
+interface PostsPageProps {
+  searchParams: Promise<{
+    search?: string
+    status?: 'draft' | 'published' | 'archived'
+  }>
+}
 
 /**
  * Posts Management Page - Server Component
  */
-export default async function PostsPage() {
+export default async function PostsPage({ searchParams }: PostsPageProps) {
   const user = await getCurrentUser()
+  const params = await searchParams
 
   if (!user) {
     return null
   }
 
-  // Fetch user's posts
-  const { posts, error } = await getUserPosts(user.id)
-
-  // Filter posts by status
-  const publishedPosts = posts.filter((p) => p.status === 'published')
-  const draftPosts = posts.filter((p) => p.status === 'draft')
-  const archivedPosts = posts.filter((p) => p.status === 'archived')
+  // Fetch user's posts with filters
+  const { posts, error } = await getPosts({
+    author_id: user.id,
+    search: params.search,
+    status: params.status,
+  })
 
   // Table columns configuration
   const columns = [
@@ -39,7 +47,7 @@ export default async function PostsPage() {
       cellClassName: 'font-medium',
       render: (row: Post) => (
         <Link href={routes.posts.editPost(row.id)} className="hover:underline">
-          {row.title}
+          <EllipsisTooltip text={row.title} maxLength={45} />
         </Link>
       ),
     },
@@ -49,9 +57,11 @@ export default async function PostsPage() {
       align: 'center' as const,
       render: (row: Post) => {
         const statusColors = {
-          published: 'bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20',
-          draft: 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-500/20',
-          archived: 'bg-gray-500/10 text-gray-700 dark:text-gray-400 border-gray-500/20',
+          published:
+            'bg-green-500/10 capitalize text-green-700 dark:text-green-400 border-green-500/20',
+          draft:
+            'bg-yellow-500/10 capitalize text-yellow-700 dark:text-yellow-400 border-yellow-500/20',
+          archived: 'bg-gray-500/10 capitalize text-gray-700 dark:text-gray-400 border-gray-500/20',
         }
         return (
           <Badge
@@ -124,67 +134,26 @@ export default async function PostsPage() {
 
       <Separator />
 
+      {/* Filter Toolbar */}
+      <PostsFilterToolbar />
+
       {/* Error Display */}
       {error && <ErrorState variant="inline" message={error} />}
 
-      {/* Posts Tabs */}
-      <Tabs defaultValue="all" className="space-y-6">
-        <TabsList className="w-full">
-          <TabsTrigger value="all">
-            All <span className="ml-1.5 text-muted-foreground">({posts.length})</span>
-          </TabsTrigger>
-          <TabsTrigger value="published">
-            Published{' '}
-            <span className="ml-1.5 text-muted-foreground">({publishedPosts.length})</span>
-          </TabsTrigger>
-          <TabsTrigger value="draft">
-            Drafts <span className="ml-1.5 text-muted-foreground">({draftPosts.length})</span>
-          </TabsTrigger>
-          <TabsTrigger value="archived">
-            Archived <span className="ml-1.5 text-muted-foreground">({archivedPosts.length})</span>
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="all" className="space-y-4">
-          <DataTable
-            data={posts}
-            columns={columns}
-            emptyMessage="You haven't created any posts yet. Start by creating your first post!"
-            hoverable={true}
-            tableClassName="bg-card"
-          />
-        </TabsContent>
-
-        <TabsContent value="published" className="space-y-4">
-          <DataTable
-            data={publishedPosts}
-            columns={columns}
-            emptyMessage="No published posts yet. Publish a draft to see it here."
-            hoverable={true}
-            tableClassName="bg-card"
-          />
-        </TabsContent>
-
-        <TabsContent value="draft" className="space-y-4">
-          <DataTable
-            data={draftPosts}
-            columns={columns}
-            emptyMessage="No drafts yet. Create a new post to get started."
-            hoverable={true}
-            tableClassName="bg-card"
-          />
-        </TabsContent>
-
-        <TabsContent value="archived" className="space-y-4">
-          <DataTable
-            data={archivedPosts}
-            columns={columns}
-            emptyMessage="No archived posts yet."
-            hoverable={true}
-            tableClassName="bg-card"
-          />
-        </TabsContent>
-      </Tabs>
+      <div className="overflow-auto">
+        {/* Posts Table */}
+        <DataTable
+          data={posts}
+          columns={columns}
+          emptyMessage={
+            params.search || params.status
+              ? 'No posts match your filters. Try adjusting your search or filters.'
+              : "You haven't created any posts yet. Start by creating your first post!"
+          }
+          hoverable={true}
+          tableClassName="bg-card border flex justify-center"
+        />
+      </div>
     </div>
   )
 }
