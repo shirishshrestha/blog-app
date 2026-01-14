@@ -39,7 +39,7 @@ export function PostCard({ post, showAuthor = true, variant = 'default' }: PostC
   if (variant === 'compact') {
     return (
       <Card className="hover:shadow-md transition-shadow">
-        <Link href={routes.dashboard.editPost(post.id)} className="block">
+        <Link href={routes.posts.editPost(post.id)} className="block">
           <CardHeader className="pb-3">
             <div className="flex items-start justify-between gap-2">
               <CardTitle className="text-lg line-clamp-1">{post.title}</CardTitle>
@@ -68,7 +68,7 @@ export function PostCard({ post, showAuthor = true, variant = 'default' }: PostC
 
   return (
     <Card className="hover:shadow-lg transition-shadow overflow-hidden">
-      <Link href={routes.dashboard.editPost(post.id)} className="block">
+      <Link href={routes.posts.editPost(post.id)} className="block">
         {post.featured_image && (
           <div className="aspect-video w-full overflow-hidden bg-muted relative">
             <Image

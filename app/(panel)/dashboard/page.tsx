@@ -1,6 +1,7 @@
 import { getCurrentUser } from '@/src/features/auth'
 import { getUserPosts } from '@/src/features/panel/post/api/post.server'
 import { PostList } from '@/src/features/panel/post/components/PostList'
+import { ErrorState } from '@/src/components/ui/error-state'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
@@ -38,7 +39,7 @@ export default async function DashboardPage() {
           <p className="text-muted-foreground">Welcome back, {user.email}</p>
         </div>
         <Button asChild>
-          <Link href={routes.dashboard.createPost}>
+          <Link href={routes.posts.createPost}>
             <Plus className="mr-2 h-4 w-4" />
             New Post
           </Link>
@@ -76,18 +77,14 @@ export default async function DashboardPage() {
       </div>
 
       {/* Error Display */}
-      {error && (
-        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive">
-          Error loading posts: {error}
-        </div>
-      )}
+      {error && <ErrorState variant="inline" message={error} />}
 
       {/* Posts Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold tracking-tight">Your Posts</h2>
           <Button variant="outline" size="sm" asChild>
-            <Link href={routes.dashboard.posts}>View All</Link>
+            <Link href={routes.posts.list}>View All</Link>
           </Button>
         </div>
 
