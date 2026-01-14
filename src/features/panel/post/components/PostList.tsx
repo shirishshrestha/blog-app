@@ -1,5 +1,5 @@
 import { PostCard } from './PostCard'
-import { EmptyState } from '@/src/components/ui/empty-state'
+import { EmptyState } from '@/src/features/shared/components/ui/empty-state'
 import { FileText } from 'lucide-react'
 import type { Post } from '../types/post.types'
 

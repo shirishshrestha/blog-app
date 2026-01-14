@@ -1,5 +1,5 @@
 import { LoginForm } from '@/src/features/auth'
-import { ProtectedRoute } from '@/src/components/auth/ProtectedRoute'
+import { ProtectedRoute } from '@/src/features/shared/components/auth/ProtectedRoute'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {

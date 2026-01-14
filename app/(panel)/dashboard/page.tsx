@@ -1,7 +1,7 @@
 import { getCurrentUser } from '@/src/features/auth'
 import { getUserPosts } from '@/src/features/panel/post/api/post.server'
 import { PostList } from '@/src/features/panel/post/components/PostList'
-import { ErrorState } from '@/src/components/ui/error-state'
+import { ErrorState } from '@/src/features/shared/components/ui/error-state'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'

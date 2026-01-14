@@ -5,9 +5,9 @@ import { routes } from '@/src/config/routes'
 import { getPublishedPosts } from '@/src/features/panel/post/api/post.server'
 import { BlogPostList } from '@/src/features/public/blog/components'
 import { Suspense } from 'react'
-import { LoadingSkeleton } from '@/src/components/ui/loading-skeleton'
-import { ErrorState } from '@/src/components/ui/error-state'
-import { PublicHeader, PublicFooter } from '@/src/components/layout'
+import { LoadingSkeleton } from '@/src/features/shared/components/ui/loading-skeleton'
+import { ErrorState } from '@/src/features/shared/components/ui/error-state'
+import { PublicHeader, PublicFooter } from '@/src/features/shared/components/layout'
 
 /**
  * Home Page - Public landing page with featured posts

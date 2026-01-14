@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Calendar, Eye, ArrowLeft, Clock } from 'lucide-react'
+import { Calendar, Eye, ArrowLeft, Clock, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { routes } from '@/src/config/routes'
@@ -43,7 +43,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </Button>
 
         {/* Post Header */}
-        <header className="mb-12 space-y-6">
+        <header className="mb-6 space-y-3">
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
@@ -69,9 +69,18 @@ export default async function PostPage({ params }: PostPageProps) {
                 </div>
               </>
             )}
+            {post.profiles?.full_name && (
+              <>
+                <span>•</span>
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  <span>{post.profiles.full_name}</span>
+                </div>
+              </>
+            )}
           </div>
 
-          <h1 className="text-5xl font-bold tracking-tight leading-tight">{post.title}</h1>
+          <h1 className="text-4xl font-bold tracking-tight leading-tight">{post.title}</h1>
 
           {post.excerpt && (
             <p className="text-xl text-muted-foreground leading-relaxed">{post.excerpt}</p>
@@ -80,7 +89,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
         {/* Featured Image */}
         {post.featured_image && (
-          <div className="relative w-full h-[500px] mb-12 rounded-xl overflow-hidden border shadow-lg">
+          <div className="relative w-full h-125 mb-8 rounded-xl overflow-hidden border shadow-lg">
             <Image
               src={post.featured_image}
               alt={post.title}

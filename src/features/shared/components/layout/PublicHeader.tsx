@@ -1,18 +1,19 @@
-'use client'
-
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ThemeToggle } from '@/src/components/ui/theme-toggle'
+import { ThemeToggle } from '@/src/features/shared/components/ui/theme-toggle'
 import { routes } from '@/src/config/routes'
-import { FileText } from 'lucide-react'
+import { FileText, LayoutDashboard } from 'lucide-react'
+import { getCurrentUser } from '@/src/features/auth/api/auth.server'
 
 /**
  * PublicHeader - Navigation header for public pages
  */
-export function PublicHeader() {
+export async function PublicHeader() {
+  const user = await getCurrentUser()
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-      <div className="wrapper flex h-14 items-center justify-between">
+      <div className="wrapper flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href={routes.home} className="flex items-center space-x-2">
             <FileText className="h-6 w-6" />
@@ -36,12 +37,23 @@ export function PublicHeader() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button variant="ghost" size="sm" asChild>
-            <Link href={routes.auth.login}>Sign In</Link>
-          </Button>
-          <Button size="sm" asChild>
-            <Link href={routes.auth.signup}>Get Started</Link>
-          </Button>
+          {user ? (
+            <Button size="lg" asChild>
+              <Link href={routes.dashboard.home}>
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
+              </Link>
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" size="lg" asChild>
+                <Link href={routes.auth.login}>Sign In</Link>
+              </Button>
+              <Button size="lg" asChild>
+                <Link href={routes.auth.signup}>Sign Up</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>

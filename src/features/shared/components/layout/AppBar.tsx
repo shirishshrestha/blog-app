@@ -1,7 +1,7 @@
 'use client'
 
 import { SidebarTrigger } from '@/components/ui/sidebar'
-import { ThemeToggle } from '@/src/components/ui/theme-toggle'
+import { ThemeToggle } from '@/src/features/shared/components/ui/theme-toggle'
 import {
   DropdownMenu,
   DropdownMenuContent,

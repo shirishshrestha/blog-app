@@ -23,6 +23,6 @@ export * from './hooks/usePostMutations'
 export * from './utils/validation'
 
 // Global UI component exports
-export { LoadingSkeleton } from '@/src/components/ui/loading-skeleton'
-export { EmptyState } from '@/src/components/ui/empty-state'
-export { ErrorState } from '@/src/components/ui/error-state'
+export { LoadingSkeleton } from '@/src/features/shared/components/ui/loading-skeleton'
+export { EmptyState } from '@/src/features/shared/components/ui/empty-state'
+export { ErrorState } from '@/src/features/shared/components/ui/error-state'

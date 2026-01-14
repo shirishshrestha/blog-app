@@ -47,11 +47,12 @@ export async function registerAction(
   _prevState: AuthActionState,
   formData: FormData
 ): Promise<AuthActionState> {
+  const fullName = formData.get('fullName') as string
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const confirmPassword = formData.get('confirmPassword') as string
 
-  if (!email || !password || !confirmPassword) {
+  if (!fullName || !email || !password || !confirmPassword) {
     return { error: 'All fields are required' }
   }
 
@@ -72,6 +73,9 @@ export async function registerAction(
       emailRedirectTo: `${
         process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
       }/auth/callback`,
+      data: {
+        full_name: fullName,
+      },
     },
   })
 

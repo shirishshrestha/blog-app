@@ -25,6 +25,7 @@ export function RegisterForm() {
     // @ts-expect-error - Zod v3 types are cached, resolver works correctly at runtime
     resolver: zodResolver(registerSchema) as Resolver<RegisterFormData>,
     defaultValues: {
+      fullName: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -45,6 +46,20 @@ export function RegisterForm() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="fullName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full Name</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="John Doe" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="email"

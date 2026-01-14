@@ -31,9 +31,9 @@ export function PostCard({ post, showAuthor = true, variant = 'default' }: PostC
   })
 
   const statusColors = {
-    published: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-    draft: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-    archived: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
+    published: 'bg-green-100 capitalize text-green-800 dark:bg-green-900 dark:text-green-200',
+    draft: 'bg-yellow-100 capitalize text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+    archived: 'bg-gray-100 capitalize text-gray-800 dark:bg-gray-900 dark:text-gray-200',
   }
 
   if (variant === 'compact') {
@@ -67,51 +67,51 @@ export function PostCard({ post, showAuthor = true, variant = 'default' }: PostC
   }
 
   return (
-    <Card className="hover:shadow-lg transition-shadow overflow-hidden">
-      <Link href={routes.posts.editPost(post.id)} className="block">
-        {post.featured_image && (
-          <div className="aspect-video w-full overflow-hidden bg-muted relative">
-            <Image
-              src={post.featured_image}
-              alt={post.title}
-              fill
-              className="object-cover transition-transform hover:scale-105"
-            />
+    <Card className="hover:shadow-lg transition-shadow overflow-hidden py-0">
+      {post.featured_image && (
+        <div className="aspect-video w-full overflow-hidden bg-muted relative">
+          <Image
+            src={post.featured_image}
+            alt={post.title}
+            fill
+            className="object-cover transition-transform hover:scale-105"
+          />
+        </div>
+      )}
+      <CardHeader>
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <Badge className={statusColors[post.status]} variant="secondary">
+            {post.status}
+          </Badge>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Eye className="h-3 w-3" />
+            <span>{post.view_count} views</span>
           </div>
-        )}
-        <CardHeader>
-          <div className="flex items-start justify-between gap-2 mb-2">
-            <Badge className={statusColors[post.status]} variant="secondary">
-              {post.status}
-            </Badge>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Eye className="h-3 w-3" />
-              <span>{post.view_count} views</span>
-            </div>
+        </div>
+        <CardTitle className="text-xl line-clamp-2">{post.title}</CardTitle>
+        <CardDescription className="line-clamp-3">
+          {post.excerpt || 'No excerpt provided'}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <Calendar className="h-4 w-4" />
+            <time dateTime={postDate}>{formattedDate}</time>
           </div>
-          <CardTitle className="text-xl line-clamp-2">{post.title}</CardTitle>
-          <CardDescription className="line-clamp-3">
-            {post.excerpt || 'No excerpt provided'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          {showAuthor && post.profiles && (
             <div className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
-              <time dateTime={postDate}>{formattedDate}</time>
+              <User className="h-4 w-4" />
+              <span>{post.profiles.full_name || 'Anonymous'}</span>
             </div>
-            {showAuthor && post.author && (
-              <div className="flex items-center gap-1">
-                <User className="h-4 w-4" />
-                <span>{post.author.email}</span>
-              </div>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter className="text-sm text-primary">
+          )}
+        </div>
+      </CardContent>
+      <CardFooter className="text-sm text-primary pb-4">
+        <Link href={routes.posts.editPost(post.id)} className="block">
           <span className="hover:underline">Edit post →</span>
-        </CardFooter>
-      </Link>
+        </Link>
+      </CardFooter>
     </Card>
   )
 }

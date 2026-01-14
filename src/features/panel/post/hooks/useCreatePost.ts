@@ -25,7 +25,7 @@ export function useCreatePost() {
         toast.success(result.message || 'Post created successfully!')
 
         // Redirect to edit page
-        router.push(routes.posts.editPost(result.postId))
+        router.push(routes.posts.list)
         router.refresh()
       } else if (result.error) {
         toast.error(result.error)

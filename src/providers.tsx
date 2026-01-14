@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useState, type ReactNode } from 'react'
 import { Provider } from 'react-redux'
 import { store } from './store'
-import { ThemeProvider } from '@/src/components/providers/theme-provider'
+import { ThemeProvider } from '@/src/features/shared/components/providers/theme-provider'
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(

@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/src/features/auth'
 import { routes } from '@/src/config/routes'
 import { SidebarProvider } from '@/components/ui/sidebar'
-import { UnifiedSidebar } from '@/src/components/layout/UnifiedSidebar'
-import { AppBar } from '@/src/components/layout/AppBar'
+import { UnifiedSidebar } from '@/src/features/shared/components/layout/UnifiedSidebar'
+import { AppBar } from '@/src/features/shared/components/layout/AppBar'
 import { panelMenuItems } from '@/src/config/menu'
 
 /**
@@ -31,7 +31,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
           <AppBar user={user} />
 
           {/* Page Content */}
-          <main className="flex-1 p-6">
+          <main className="flex-1 p-3 md:p-6">
             <div className="mx-auto max-w-7xl">{children}</div>
           </main>
         </div>
