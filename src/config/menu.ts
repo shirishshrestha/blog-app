@@ -31,9 +31,4 @@ export const panelMenuItems: MenuItem[] = [
       },
     ],
   },
-  {
-    name: 'Settings',
-    path: '/dashboard/settings',
-    icon: 'Settings',
-  },
 ]
