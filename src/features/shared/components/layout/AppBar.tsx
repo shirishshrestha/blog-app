@@ -65,7 +65,7 @@ export function AppBar({ user }: AppBarProps) {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <LogoutButton />
+                  <LogoutButton className="w-full! justify-start" />
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

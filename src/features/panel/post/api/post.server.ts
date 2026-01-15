@@ -20,7 +20,8 @@ export const getPosts = cache(async (filters?: PostFilters) => {
           full_name,
           avatar_url
         )
-      `
+      `,
+        { count: 'exact' }
       )
       .order('created_at', { ascending: false })
 
@@ -45,17 +46,17 @@ export const getPosts = cache(async (filters?: PostFilters) => {
       query = query.range(filters.offset, filters.offset + (filters.limit || 10) - 1)
     }
 
-    const { data, error } = await query
+    const { data, error, count } = await query
 
     if (error) {
       console.error('Error fetching posts:', error)
-      return { posts: [], error: error.message }
+      return { posts: [], error: error.message, totalCount: 0 }
     }
 
-    return { posts: data as Post[], error: null }
+    return { posts: data as Post[], error: null, totalCount: count || 0 }
   } catch (error) {
     console.error('Unexpected error fetching posts:', error)
-    return { posts: [], error: 'Failed to fetch posts' }
+    return { posts: [], error: 'Failed to fetch posts', totalCount: 0 }
   }
 })
 

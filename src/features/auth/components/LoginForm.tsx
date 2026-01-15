@@ -1,6 +1,7 @@
 'use client'
 
-import { useForm, type Resolver } from 'react-hook-form'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLogin } from '../hooks/useLogin'
 import { loginSchema, type LoginFormData } from '../utils/validation'
@@ -17,18 +18,20 @@ import {
 } from '@/components/ui/form'
 import Link from 'next/link'
 import { routes } from '@/src/config/routes'
+import { Eye, EyeOff } from 'lucide-react'
 
 export function LoginForm() {
-  const loginMutation = useLogin()
-
+  const [showPassword, setShowPassword] = useState(false)
   const form = useForm<LoginFormData>({
-    // @ts-ignore - Zod v3.22 internal types don't match resolver expectations but runtime works
+    // @ts-ignore - Zod resolver types don't match RHF types in this project setup
     resolver: zodResolver(loginSchema) as any,
     defaultValues: {
       email: '',
       password: '',
     },
   })
+
+  const loginMutation = useLogin(form)
 
   const onSubmit = async (data: LoginFormData) => {
     await loginMutation.mutateAsync(data)
@@ -72,7 +75,22 @@ export function LoginForm() {
                   </Link>
                 </div>
                 <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="••••••••"
+                      className="pr-10"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      onClick={() => setShowPassword((s) => !s)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-8 w-8 text-muted-foreground hover:text-foreground"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

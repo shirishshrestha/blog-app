@@ -17,17 +17,17 @@ export const panelMenuItems: MenuItem[] = [
   {
     name: 'Posts',
     path: '/posts',
-    icon: 'FileText',
+    icon: 'Folders',
     children: [
       {
         name: 'All Posts',
         path: '/posts',
-        icon: 'FileText',
+        icon: 'Files',
       },
       {
         name: 'Create New',
         path: '/posts/create',
-        icon: 'FileText',
+        icon: 'FilePlus',
       },
     ],
   },

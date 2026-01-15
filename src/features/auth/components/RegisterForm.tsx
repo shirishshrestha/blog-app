@@ -1,6 +1,7 @@
 'use client'
 
-import { useForm, type Resolver } from 'react-hook-form'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRegister } from '../hooks/useRegister'
 import { registerSchema, type RegisterFormData } from '../utils/validation'
@@ -17,8 +18,11 @@ import {
 } from '@/components/ui/form'
 import Link from 'next/link'
 import { routes } from '@/src/config/routes'
+import { Eye, EyeOff } from 'lucide-react'
 
 export function RegisterForm() {
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const registerMutation = useRegister()
 
   const form = useForm<RegisterFormData>({
@@ -81,7 +85,22 @@ export function RegisterForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="••••••••"
+                      className="pr-10"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      onClick={() => setShowPassword((s) => !s)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-8 w-8 text-muted-foreground hover:text-foreground"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -95,7 +114,28 @@ export function RegisterForm() {
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
+                  <div className="relative">
+                    <Input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      placeholder="••••••••"
+                      className="pr-10"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      aria-label={
+                        showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'
+                      }
+                      onClick={() => setShowConfirmPassword((s) => !s)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-8 w-8 text-muted-foreground hover:text-foreground"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

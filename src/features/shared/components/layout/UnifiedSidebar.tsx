@@ -15,7 +15,15 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { ChevronRight, LayoutDashboard, FileText, Settings } from 'lucide-react'
+import {
+  ChevronRight,
+  LayoutDashboard,
+  FileText,
+  Settings,
+  Folders,
+  FilePlus,
+  Files,
+} from 'lucide-react'
 import type { MenuItem } from '@/src/config/menu'
 
 interface UnifiedSidebarProps {
@@ -28,7 +36,10 @@ interface UnifiedSidebarProps {
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   LayoutDashboard,
   FileText,
+  Folders,
   Settings,
+  FilePlus,
+  Files,
 }
 
 /**

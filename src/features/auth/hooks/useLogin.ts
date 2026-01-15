@@ -9,7 +9,7 @@ import { toast } from 'sonner'
 /**
  * Hook for login mutation with TanStack Query
  */
-export function useLogin() {
+export function useLogin(form: { reset: () => void }) {
   const router = useRouter()
   const queryClient = useQueryClient()
 
@@ -19,7 +19,7 @@ export function useLogin() {
       // Invalidate and refetch user-related queries
       queryClient.invalidateQueries({ queryKey: ['user'] })
       queryClient.invalidateQueries({ queryKey: ['session'] })
-      
+      form.reset()
       // Redirect to dashboard
       router.push(routes.dashboard.home)
       router.refresh()
