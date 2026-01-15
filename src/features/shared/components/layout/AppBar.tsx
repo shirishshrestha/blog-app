@@ -58,7 +58,7 @@ export function AppBar({ user }: AppBarProps) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href={routes.dashboard.settings}>
+                  <Link href={''}>
                     <Settings className="mr-2 h-4 w-4" />
                     Settings
                   </Link>
