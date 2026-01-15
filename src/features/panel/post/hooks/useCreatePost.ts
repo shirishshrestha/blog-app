@@ -10,7 +10,7 @@ import type { CreatePostInput } from '../types/post.types'
 /**
  * Hook for creating a new post
  */
-export function useCreatePost() {
+export function useCreatePost(form?: { reset: () => void }) {
   const router = useRouter()
   const queryClient = useQueryClient()
 
@@ -23,7 +23,7 @@ export function useCreatePost() {
         queryClient.invalidateQueries({ queryKey: ['user-posts'] })
 
         toast.success(result.message || 'Post created successfully!')
-
+        form?.reset()
         // Redirect to posts list page
         router.push(routes.posts.list)
         router.refresh()
