@@ -67,10 +67,7 @@ export function LoginForm() {
               <FormItem>
                 <div className="flex items-center justify-between">
                   <FormLabel>Password</FormLabel>
-                  <Link
-                    href={routes.auth.forgotPassword}
-                    className="text-xs text-primary hover:underline"
-                  >
+                  <Link href={''} className="text-xs text-primary hover:underline">
                     Forgot password?
                   </Link>
                 </div>
