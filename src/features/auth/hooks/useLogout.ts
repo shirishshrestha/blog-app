@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { routes } from '@/src/config/routes'
 import { useAppDispatch } from '@/src/store/hooks'
 import { logoutAction } from '@/src/store/slices/authSlice'
+import { broadcastLogout } from '@/src/lib/broadcast'
 
 /**
  * Hook for logout mutation with TanStack Query and Redux
@@ -20,10 +21,13 @@ export function useLogout() {
     onSuccess: () => {
       // Clear Redux state
       dispatch(logoutAction())
-      
+
       // Clear all cached queries
       queryClient.clear()
-      
+
+      // Broadcast logout to other tabs
+      broadcastLogout()
+
       // Redirect to login page
       router.push(routes.auth.login)
       router.refresh()
