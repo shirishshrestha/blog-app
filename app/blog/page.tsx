@@ -5,10 +5,13 @@ import { LoadingSkeleton } from '@/src/features/shared/components/ui/loading-ske
 import { ErrorState } from '@/src/features/shared/components/ui/error-state'
 import { Separator } from '@/components/ui/separator'
 import { BlogFilterToolbar } from '@/src/features/public/blog/components/BlogFilterToolbar'
+import { Pagination } from '@/src/features/shared/components/Pagination'
 
 interface BlogPageProps {
   searchParams: Promise<{
     search?: string
+    page?: string
+    limit?: string
   }>
 }
 
@@ -17,7 +20,16 @@ interface BlogPageProps {
  */
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const params = await searchParams
-  const { posts, error } = await getPublishedPosts({ search: params.search })
+  // Pagination params
+  const currentPage = params.page ? parseInt(params.page) : 1
+  const pageSize = params.limit ? parseInt(params.limit) : 10
+  const offset = (currentPage - 1) * pageSize
+
+  const { posts, error, totalCount } = await getPublishedPosts({
+    search: params.search,
+    limit: pageSize,
+    offset,
+  })
 
   return (
     <div className="min-h-screen py-16">
@@ -37,9 +49,9 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </div>
 
         {/* Posts Count */}
-        {!error && posts.length > 0 && (
+        {!error && totalCount > 0 && (
           <p className="text-sm text-muted-foreground mb-6">
-            {posts.length} {posts.length === 1 ? 'article' : 'articles'}
+            {totalCount} {totalCount === 1 ? 'article' : 'articles'}
             {params.search && ` matching "${params.search}"`}
           </p>
         )}
@@ -48,9 +60,25 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         {error ? (
           <ErrorState variant="inline" title="Failed to load posts" message={error} />
         ) : (
-          <Suspense fallback={<LoadingSkeleton variant="card" count={9} />}>
-            <BlogPostList posts={posts} />
-          </Suspense>
+          <>
+            <Suspense fallback={<LoadingSkeleton variant="card" count={9} />}>
+              <BlogPostList posts={posts} />
+            </Suspense>
+
+            {/* Pagination */}
+            <div className="mt-8">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.max(1, Math.ceil((totalCount || 0) / pageSize))}
+                totalCount={totalCount || 0}
+                pageSize={pageSize}
+                pageSizeOptions={[5, 10, 20, 50]}
+                showPageSizeSelector={true}
+                showPageInfo={true}
+                showFirstLast={true}
+              />
+            </div>
+          </>
         )}
       </div>
     </div>

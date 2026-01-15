@@ -13,11 +13,14 @@ import { DeletePostButton } from '@/src/features/panel/post/components/DeletePos
 import type { Post } from '@/src/features/panel/post/types/post.types'
 import { PostsFilterToolbar } from '@/src/features/panel/post/components/PostsFilterToolbar'
 import EllipsisTooltip from '@/src/features/shared/components/EllipsisTooltip'
+import { Pagination } from '@/src/features/shared/components/Pagination'
 
 interface PostsPageProps {
   searchParams: Promise<{
     search?: string
     status?: 'draft' | 'published' | 'archived'
+    page?: string
+    limit?: string
   }>
 }
 
@@ -32,12 +35,24 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
     return null
   }
 
-  // Fetch user's posts with filters
-  const { posts, error } = await getPosts({
+  // Pagination params
+  const currentPage = params.page ? parseInt(params.page) : 1
+  const pageSize = params.limit ? parseInt(params.limit) : 10
+  const offset = (currentPage - 1) * pageSize
+
+  // Fetch user's posts with filters and pagination
+  const { posts, error, totalCount } = await getPosts({
     author_id: user.id,
     search: params.search,
     status: params.status,
+    limit: pageSize,
+    offset,
   })
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalCount / pageSize)
+
+  console.log('Fetched posts:', posts)
 
   // Table columns configuration
   const columns = [
@@ -154,6 +169,18 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
           tableClassName="bg-card border flex justify-center"
         />
       </div>
+
+      {/* Pagination */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalCount={totalCount}
+        pageSize={pageSize}
+        pageSizeOptions={[5, 10, 20, 50, 100]}
+        showPageSizeSelector={true}
+        showPageInfo={true}
+        showFirstLast={true}
+      />
     </div>
   )
 }
