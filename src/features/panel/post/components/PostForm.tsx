@@ -36,7 +36,6 @@ interface PostFormProps {
  * PostForm - Form component for creating and editing posts
  */
 export function PostForm({ post, mode }: PostFormProps) {
-  const createMutation = useCreatePost()
   const updateMutation = useUpdatePost(post?.id || '')
 
   const form = useForm<PostFormData>({
@@ -50,6 +49,7 @@ export function PostForm({ post, mode }: PostFormProps) {
       status: post?.status || 'draft',
     },
   })
+  const createMutation = useCreatePost(form)
 
   const isLoading = mode === 'create' ? createMutation.isPending : updateMutation.isPending
 

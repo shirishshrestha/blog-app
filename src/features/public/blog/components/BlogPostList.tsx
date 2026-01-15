@@ -20,7 +20,6 @@ export function BlogPostList({ posts, featured = false }: BlogPostListProps) {
       <div className="space-y-8">
         {posts.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold mb-4">Recent Posts</h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {posts.map((post) => (
                 <BlogPostCard key={post.id} post={post} />
