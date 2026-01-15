@@ -49,7 +49,7 @@ export async function register(credentials: RegisterCredentials) {
     email: credentials.email,
     password: credentials.password,
     options: {
-      emailRedirectTo: `${window.location.origin}/auth/callback`,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
     },
   })
 
@@ -82,7 +82,10 @@ export async function logout() {
 export async function getUser() {
   const supabase = createClient()
 
-  const { data: { user }, error } = await supabase.auth.getUser()
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser()
 
   if (error) {
     throw new Error(error.message)
@@ -97,7 +100,10 @@ export async function getUser() {
 export async function getClientSession() {
   const supabase = createClient()
 
-  const { data: { session }, error } = await supabase.auth.getSession()
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession()
 
   if (error) {
     throw new Error(error.message)
@@ -115,7 +121,7 @@ export async function loginWithOAuth(provider: 'google' | 'github') {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
     },
   })
 
